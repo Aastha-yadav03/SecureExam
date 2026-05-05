@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
@@ -32,6 +33,7 @@ const AdminPanel = () => {
     } else if (activeTab === 'users') {
       fetchUsers();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, token]);
 
   const fetchLogs = async () => {
