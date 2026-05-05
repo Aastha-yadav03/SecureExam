@@ -117,7 +117,7 @@ const Login = () => {
           </form>
 
           <p className="auth-link">
-            Need an account? <a href="/register">Request Access</a>
+            Contact your administrator to request account access.
           </p>
 
           <div className="demo-credentials">

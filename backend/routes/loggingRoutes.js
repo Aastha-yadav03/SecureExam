@@ -7,6 +7,9 @@ const router = express.Router();
 // All routes require authentication
 router.use(authenticate);
 
+// Get all users (Admin only)
+router.get('/users', authorize('admin'), accessLogController.getAllUsers);
+
 // Get access logs (Admin only)
 router.get('/logs', authorize('admin'), accessLogController.getAccessLogs);
 

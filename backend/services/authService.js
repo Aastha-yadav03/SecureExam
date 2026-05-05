@@ -43,7 +43,7 @@ const registerUser = async (userData) => {
     email: userData.email,
     password: userData.password,
     role: userData.role,
-    departmentmm: userData.department || null,
+    department: userData.department || null,
   });
 
   await user.save();

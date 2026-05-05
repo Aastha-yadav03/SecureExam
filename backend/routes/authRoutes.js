@@ -5,10 +5,10 @@ const { authenticate } = require('../middleware/auth');
 const router = express.Router();
 
 // Public routes
-router.post('/register', authController.register);
 router.post('/login', authController.login);
 
 // Protected routes
+router.post('/register', authenticate, authController.register);
 router.post('/mfa/enable', authenticate, authController.enableMFA);
 router.post('/mfa/disable', authenticate, authController.disableMFA);
 

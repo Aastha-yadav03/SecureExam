@@ -1,22 +1,16 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [darkMode, setDarkMode] = React.useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
-  };
-
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    document.body.classList.toggle('dark-mode');
   };
 
   return (
@@ -35,15 +29,13 @@ const Navbar = () => {
             {user.role === 'faculty' && (
               <Link to="/exam/create" className="nav-link">Create Exam</Link>
             )}
-            
+
             <div className="nav-user">
               <span className="badge">{user.role}</span>
               <span>{user.name}</span>
             </div>
 
-            <button className="theme-toggle" onClick={toggleDarkMode} title="Toggle Theme">
-              {darkMode ? '☀️' : '🌙'}
-            </button>
+            <ThemeToggle />
             <button className="btn btn-danger" onClick={handleLogout}>
               Logout
             </button>

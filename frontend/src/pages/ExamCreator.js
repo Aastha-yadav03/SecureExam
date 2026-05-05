@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
+import { useSocket } from '../context/SocketContext';
 import { useNavigate } from 'react-router-dom';
 import './ExamCreator.css';
 
 const ExamCreator = () => {
   const { token } = useAuth();
+  const { emitExamUpdate } = useSocket();
   const navigate = useNavigate();
   const [mode, setMode] = useState('manual'); // 'manual' or 'upload'
   const [file, setFile] = useState(null);
@@ -122,6 +124,14 @@ const ExamCreator = () => {
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.error || 'Failed to process request');
+      }
+
+      const result = await response.json();
+      const examId = result.data?._id || result.exam?._id;
+
+      // Emit real-time update
+      if (examId) {
+        emitExamUpdate(examId, 'created');
       }
 
       navigate('/');

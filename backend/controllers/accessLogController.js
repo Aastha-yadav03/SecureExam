@@ -1,4 +1,28 @@
 const accessLogService = require('../services/accessLogService');
+const User = require('../models/User');
+
+/**
+ * Get all users (Admin only)
+ */
+const getAllUsers = async (req, res, next) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Insufficient permissions' });
+    }
+
+    const users = await User.find({})
+      .select('-password')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: 'Users retrieved successfully',
+      count: users.length,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Get access logs
@@ -104,6 +128,7 @@ const getSuspiciousActivities = async (req, res, next) => {
 };
 
 module.exports = {
+  getAllUsers,
   getAccessLogs,
   getUserAccessHistory,
   getAuditTrail,

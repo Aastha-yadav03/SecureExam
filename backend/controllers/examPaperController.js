@@ -47,7 +47,7 @@ const getExamPaper = async (req, res, next) => {
   try {
     const { paperId } = req.params;
 
-    const examPaper = await examPaperService.getExamPaper(paperId, req.user.id);
+    const examPaper = await examPaperService.getExamPaper(paperId, req.user.id, req.user.role);
 
     res.status(200).json({
       message: 'Exam paper retrieved successfully',

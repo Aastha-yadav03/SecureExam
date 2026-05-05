@@ -2,10 +2,17 @@ const authService = require('../services/authService');
 const accessLogService = require('../services/accessLogService');
 
 /**
- * Register user
+ * Register user (Admin only)
  */
 const register = async (req, res, next) => {
   try {
+    // Check if user is admin
+    if (!req.user || req.user.role !== 'admin') {
+      const error = new Error('Only administrators can create user accounts');
+      error.statusCode = 403;
+      throw error;
+    }
+
     const { name, email, password, role, department } = req.body;
 
     const result = await authService.registerUser({
@@ -18,12 +25,12 @@ const register = async (req, res, next) => {
 
     // Log access
     await accessLogService.logAccess({
-      userId: result.user.id,
+      userId: req.user.id,
       action: 'created',
       resourceType: 'user',
       ipAddress: req.clientIp,
       userAgent: req.userAgent,
-      details: `User registered: ${email}`,
+      details: `Admin ${req.user.email} created user: ${email}`,
     });
 
     res.status(201).json({
